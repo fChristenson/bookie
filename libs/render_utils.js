@@ -1,4 +1,4 @@
-var RenderUtils = (function(U, searchResultListItem) {
+var RenderUtils = (function(U, C, K) {
   function renderList(list, data, e) {
     if(!e.target.value) {
       list.innerHTML = '';
@@ -11,12 +11,53 @@ var RenderUtils = (function(U, searchResultListItem) {
 
   function addItems(list) {
     return function(d, i) {
-      return list.appendChild(searchResultListItem.makeElement(d.name, d.text, i + 2));
+      return list.appendChild(makeLiElement(d, i + 2));
     };
+  }
+
+  function makeLiElement(data, index) {
+    var li = document.createElement('li');
+    li.tabIndex = index;
+    li.className = 'bookie_searchbox__li';
+    li.appendChild(makeHeader(data.name));
+    li.appendChild(makeContent(data.text));
+    li.addEventListener('keyup', selectByKey(li));
+    li.addEventListener('click', selectByClick(li));
+    
+    return li;
+  }
+
+  function selectByClick(el) {
+    return function(e) {
+      C.runLiCommand(e, el);
+    };
+  }
+
+  function selectByKey(el) {
+    return function(e) {
+      if(e.keyCode === K.ENTER_KEY_CODE) {
+        C.runLiCommand(e, el);
+      }
+    };
+  }
+
+  function makeHeader(text) {
+    var header = document.createElement('div');
+    header.innerHTML = text;
+    header.className = 'bookie_searchbox__li__header';
+    return header;
+  }
+
+  function makeContent(text) {
+    var content = document.createElement('div');
+    content.className = 'bookie_searchbox__li__content';
+    content.innerHTML = text;
+    return content;
   }
 
   return {
     renderList: renderList,
-    addItems: addItems
+    addItems: addItems,
+    makeLiElement: makeLiElement
   };
-})(Utils, searchResultListItem);
+})(Utils, CommandUtils, KeyUtils);

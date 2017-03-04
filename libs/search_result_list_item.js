@@ -1,14 +1,22 @@
-var searchResultListItem = (function(window) {
+var searchResultListItem = (function(window, C, K) {
   var document = window.document;
   
-  function makeElement(headerText, contentText, index) {
+  function makeElement(data, index) {
     var li = document.createElement('li');
     li.tabIndex = index;
     li.className = 'bookie_searchbox__li';
-    li.appendChild(makeHeader(headerText));
-    li.appendChild(makeContent(contentText));
+    li.appendChild(makeHeader(data.name));
+    li.appendChild(makeContent(data.text));
+    li.addEventListener('keyup', selectScript);
+    li.addEventListener('click', C.runCommand);
     
     return li;
+  }
+
+  function selectScript(e) {
+    if(e.keyCode === K.ENTER_KEY_CODE) {
+      C.runCommand(e);
+    }
   }
 
   function makeHeader(text) {
@@ -28,4 +36,4 @@ var searchResultListItem = (function(window) {
   return {
     makeElement: makeElement
   };
-})(window);
+})(window, CommandUtils, KeyUtils);

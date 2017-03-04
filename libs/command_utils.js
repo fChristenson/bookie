@@ -1,6 +1,28 @@
-var CommandUtils = (function() {
+var CommandUtils = (function(U, data) {
   function runCommand(e) {
-    console.log('run');
+    if(e.target.value) {
+      e.target.value
+      .split('->')
+      .forEach(function(str) {
+        chrome.tabs.executeScript({
+          code: str
+        });
+      });
+    }
+  }
+
+  function runLiCommand(e, li) {
+    var text = li.lastChild.innerText;
+
+    if(text) {
+      text
+      .split('->')
+      .forEach(function(str) {
+        chrome.tabs.executeScript({
+          code: str
+        });
+      });
+    }
   }
 
   function saveCommand(e) {
@@ -9,6 +31,7 @@ var CommandUtils = (function() {
 
   return {
     runCommand: runCommand,
+    runLiCommand: runLiCommand,
     saveCommand: saveCommand
   };
-})();
+})(Utils, data);
