@@ -1,0 +1,61 @@
+/*
+blueColor: #0077B5,
+grayColor: #666363,
+whiteColor: white,
+fontFamily: sans-serif,
+bodyFontSize: 12px,
+headerFontSize: 14px
+*/
+
+.bookie_searchbox, .bookie_searchbox * {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.bookie_searchbox {
+  width: 600px;
+  height: 300px;
+  background: white;
+}
+
+.bookie_searchbox__input {
+  padding: 12px 4px;
+  color: #0077B5;
+  background: white;
+  border: 1px solid #666363;
+  margin: 16px 8px 8px;
+  width: calc(100% - 16px);
+  display: block;
+  outline: none;
+  font-size: 12px;
+}
+
+.bookie_searchbox__ul {
+  list-style: none;
+  padding: 0 0 16px;
+  margin: 0;
+  width: 100%;
+}
+
+.bookie_searchbox__li {
+  padding: 8px;
+  cursor: pointer;
+  color: #0077B5;
+  outline: none;
+}
+
+.bookie_searchbox__li:focus {
+  background: #0077B5;
+  color: white;
+}
+
+.bookie_searchbox__li__content {
+  font-size: 12px;
+  padding: 4px 0 0;
+}
+
+.bookie_searchbox__li__header {
+  font-size: 14px;
+}
