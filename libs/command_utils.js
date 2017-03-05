@@ -16,7 +16,8 @@ var CommandUtils = (function(U, data) {
   function getCommand(e) {
     if(U.isNumberTag(e)) {
       var index = parseInt(e.target.value.slice(1, e.target.value.length));
-      return data.find(U.hasId(index)).text;
+      var command = data.find(U.hasId(index));
+      return command ? command.text : '';
     }
 
     return e.target.value;

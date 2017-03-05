@@ -49,7 +49,7 @@ var RenderUtils = (function(U, C, K) {
     return header;
   }
 
-  function makeHeader(text, index) {
+  function makeHeader(text) {
     var header = document.createElement('div');
     header.innerHTML = text;
     header.className = 'bookie_searchbox__li__header';

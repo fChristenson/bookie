@@ -13,7 +13,22 @@ var reducers = (function(actions) {
     }
   }
 
+  function keyReducer(state, action) {
+    switch(action.type) {
+
+    case actions.SET_SHIFT_KEY_HELD:
+      return Object.assign({}, state, {shiftKeyHeld: true});
+
+    case actions.UNSET_SHIFT_KEY_HELD:
+      return Object.assign({}, state, {shiftKeyHeld: false});
+
+    default:
+      return state;
+    }
+  }
+
   return [
-    saveReducer
+    saveReducer,
+    keyReducer
   ];
 })(actions);

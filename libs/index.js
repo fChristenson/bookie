@@ -4,6 +4,7 @@
   var input = document.querySelector('.bookie_searchbox__input');
   var UP_KEY_CODE = 38;
   var DOWN_KEY_CODE = 40;
+  var updatedState = {};
 
   S.getCommandHistory(initCommandHistory);
 
@@ -12,7 +13,7 @@
   data.forEach(R.addItems(list));
 
   function updateState(state) {
-    input.value = state.commandHistory[state.commandHistory.length -1];
+    updatedState = state;
   }
 
   function initCommandHistory(vals) {
@@ -22,7 +23,7 @@
 
   function update(list) {
     return function(e) {
-      if(K.getShiftKeyHeld() && e.keyCode === K.ENTER_KEY_CODE) {
+      if(updatedState.shiftKeyHeld && e.keyCode === K.ENTER_KEY_CODE) {
         return C.saveCommand(e);
       }
 
@@ -35,7 +36,7 @@
       }
 
       if(e.keyCode === K.SHIFT_KEY_CODE) {
-        return K.setShiftKeyHeld(false);
+        return state.dispatch(actions.makeAction(actions.UNSET_SHIFT_KEY_HELD));
       }
 
       if(e.keyCode === K.ENTER_KEY_CODE) {
