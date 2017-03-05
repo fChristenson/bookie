@@ -1,5 +1,6 @@
 var saveUtils = (function(state, actions) {
   var COMMAND_HISTORY = 'commandHistory';
+  var MAX_HISTORY_LENGTH = 100;
   
   function getCommandHistory(callback) {
     return chrome.storage.sync.get(COMMAND_HISTORY, callback);
@@ -13,6 +14,10 @@ var saveUtils = (function(state, actions) {
     return function(vals) {
       var array = (vals && vals.commandHistory) ? vals.commandHistory : [];
       array.push(e.target.value);
+
+      if(array.length >= MAX_HISTORY_LENGTH) {
+        array.shift();
+      }
 
       var obj = {};
       obj.commandHistory = array;
