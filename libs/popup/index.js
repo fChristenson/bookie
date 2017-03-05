@@ -7,6 +7,7 @@
   var updatedState = {};
 
   S.getCommandHistory(initCommandHistory);
+  C.resetCommandQueue();
 
   input.addEventListener('keyup', update(list));
   input.addEventListener('keydown', K.isHoldingShift);

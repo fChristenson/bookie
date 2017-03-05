@@ -25,7 +25,12 @@ var CommandUtils = (function(window, U, data) {
     console.log('save');
   }
 
+  function resetCommandQueue() {
+    port.postMessage('reset');
+  }
+
   return {
+    resetCommandQueue: resetCommandQueue,
     runCommand: runCommand,
     runLiCommand: runLiCommand,
     saveCommand: saveCommand

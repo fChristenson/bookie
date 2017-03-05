@@ -3,6 +3,11 @@ var commands = [];
 chrome.extension.onConnect.addListener(function(port) {
 
   port.onMessage.addListener(function(msg) {
+    if(msg === 'reset') {
+      commands = [];
+      return;
+    }
+
     if(msg === 'done') {
       var command = commands.shift();
       
