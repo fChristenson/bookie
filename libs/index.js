@@ -14,36 +14,45 @@
 
   function updateState(state) {
     updatedState = state;
+    
+    if(updatedState.showCommandFromHistory) {
+      input.value = updatedState.commandHistory[updatedState.commandHistoryPointer];
+    }
   }
 
   function initCommandHistory(vals) {
     var history = vals.commandHistory || [];
     state.dispatch(actions.makeAction(actions.SET_EXECUTED_COMMANDS, history));
+    state.dispatch(actions.makeAction(actions.SET_COMMAND_HISTORY_POINTER, history.length));
   }
 
   function update(list) {
     return function(e) {
       if(updatedState.shiftKeyHeld && e.keyCode === K.ENTER_KEY_CODE) {
+        state.dispatch(actions.makeAction(actions.SET_SHOW_COMMAND_FROM_HISTORY, false));
         return C.saveCommand(e);
       }
 
       if(e.keyCode === UP_KEY_CODE) {
-        console.log('up');
+        return state.dispatch(actions.makeAction(actions.MOVE_COMMAND_HISTORY_POINTER_BACK));
       }
 
       if(e.keyCode === DOWN_KEY_CODE) {
-        console.log('down');
+        return state.dispatch(actions.makeAction(actions.MOVE_COMMAND_HISTORY_POINTER_FORWARD));
       }
 
       if(e.keyCode === K.SHIFT_KEY_CODE) {
+        state.dispatch(actions.makeAction(actions.SET_SHOW_COMMAND_FROM_HISTORY, false));
         return state.dispatch(actions.makeAction(actions.UNSET_SHIFT_KEY_HELD));
       }
 
       if(e.keyCode === K.ENTER_KEY_CODE) {
+        state.dispatch(actions.makeAction(actions.SET_SHOW_COMMAND_FROM_HISTORY, false));
         S.saveCommandToHistory(e);
         return C.runCommand(e);
       }
 
+      state.dispatch(actions.makeAction(actions.SET_SHOW_COMMAND_FROM_HISTORY, false));
       return R.renderList(list, data, e);
     };
   }

@@ -2,7 +2,9 @@ var state = (function(reducers) {
   var subs = [];
   var data = {
     commandHistory: [],
-    shiftKeyHeld: false
+    shiftKeyHeld: false,
+    commandHistoryPointer: 0,
+    showCommandFromHistory: false
   };
 
   function subscribe(obj) {
