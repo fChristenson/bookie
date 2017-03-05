@@ -1,16 +1,7 @@
 var CommandUtils = (function(U, data) {
   function runCommand(e) {
     var text = getCommand(e);
-
-    if(text) {
-      text
-      .split('->')
-      .forEach(function(str) {
-        chrome.tabs.executeScript({
-          code: str
-        });
-      });
-    }
+    run(text);
   }
 
   function getCommand(e) {
@@ -25,15 +16,20 @@ var CommandUtils = (function(U, data) {
 
   function runLiCommand(e, li) {
     var text = li.lastChild.innerText;
+    run(text);
+  }
 
+  function run(text) {
     if(text) {
-      text
-      .split('->')
-      .forEach(function(str) {
+      // split on arrow to know what scripts will run on the next page
+      var array = text.split('->');
+      
+      // use a for loop to force each script to run in synch
+      for(var i = 0; i < array.length; i++) {
         chrome.tabs.executeScript({
-          code: str
+          code: array[i]
         });
-      });
+      }
     }
   }
 

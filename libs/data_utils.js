@@ -6,7 +6,7 @@ var data = [
   },
   {
     id: 2,
-    name: 'visit lolcats several times',
-    text: 'open(http://www.google.com) fill(#search, lolcats) click(.result-link) open(http://www.google.com) fill(#search, lolcats) click(.result-link) open(http://www.google.com) fill(#search, lolcats) click(.result-link) open(http://www.google.com) fill(#search, lolcats) click(.result-link) open(http://www.google.com) fill(#search, lolcats) click(.result-link) open(http://www.google.com) fill(#search, lolcats) click(.result-link)'
+    name: 'fill form and go too google',
+    text: 'document.querySelector("input").value = "foo"; document.location.href = "http://google.com";'
   }
 ];
