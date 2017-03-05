@@ -1,7 +1,9 @@
-var CommandUtils = (function(U, data) {
+var CommandUtils = (function(window, U, data) {
+  var port = chrome.extension.connect({name: 'Run scripts'});
+
   function runCommand(e) {
     var text = getCommand(e);
-    run(text);
+    port.postMessage(text);
   }
 
   function getCommand(e) {
@@ -16,21 +18,7 @@ var CommandUtils = (function(U, data) {
 
   function runLiCommand(e, li) {
     var text = li.lastChild.innerText;
-    run(text);
-  }
-
-  function run(text) {
-    if(text) {
-      // split on arrow to know what scripts will run on the next page
-      var array = text.split('->');
-      
-      // use a for loop to force each script to run in synch
-      for(var i = 0; i < array.length; i++) {
-        chrome.tabs.executeScript({
-          code: array[i]
-        });
-      }
-    }
+    port.postMessage(text);
   }
 
   function saveCommand(e) {
@@ -42,4 +30,4 @@ var CommandUtils = (function(U, data) {
     runLiCommand: runLiCommand,
     saveCommand: saveCommand
   };
-})(Utils, data);
+})(window, Utils, data);
