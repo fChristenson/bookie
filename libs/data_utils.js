@@ -7,6 +7,6 @@ var data = [
   {
     id: 2,
     name: 'fill form and go too google',
-    text: 'document.querySelector("input").value = "foo"; document.location.href = "http://google.com";'
+    text: 'document.querySelector("input").value = "foo"; console.log("foo"); -> console.log("bar"); document.location.href = "http://google.com";'
   }
 ];
