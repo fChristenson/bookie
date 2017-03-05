@@ -3,6 +3,9 @@
   "env": {
     "browser": true
   },
+  "globals": {
+    "chrome": true
+  },
   "rules": {
     "indent": ["error", 2],
     "semi": ["error"],

@@ -16,6 +16,7 @@
   // Optional
   "author": "Fredrik Christenson",
   "permissions": [
+    "storage",
     "tabs",
     "http://*/*",
     "https://*/*",

@@ -1,7 +1,9 @@
 var CommandUtils = (function(U, data) {
   function runCommand(e) {
-    if(e.target.value) {
-      e.target.value
+    var text = getCommand(e);
+
+    if(text) {
+      text
       .split('->')
       .forEach(function(str) {
         chrome.tabs.executeScript({
@@ -9,6 +11,15 @@ var CommandUtils = (function(U, data) {
         });
       });
     }
+  }
+
+  function getCommand(e) {
+    if(U.isNumberTag(e)) {
+      var index = parseInt(e.target.value.slice(1, e.target.value.length));
+      return data.find(U.hasId(index)).text;
+    }
+
+    return e.target.value;
   }
 
   function runLiCommand(e, li) {

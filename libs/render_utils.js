@@ -19,7 +19,8 @@ var RenderUtils = (function(U, C, K) {
     var li = document.createElement('li');
     li.tabIndex = index;
     li.className = 'bookie_searchbox__li';
-    li.appendChild(makeHeader(data.name));
+    li.appendChild(makeIdLabel(data.id));
+    li.appendChild(makeHeader(data.name, index));
     li.appendChild(makeContent(data.text));
     li.addEventListener('keyup', selectByKey(li));
     li.addEventListener('click', selectByClick(li));
@@ -41,7 +42,14 @@ var RenderUtils = (function(U, C, K) {
     };
   }
 
-  function makeHeader(text) {
+  function makeIdLabel(index) {
+    var header = document.createElement('div');
+    header.innerHTML = '#' + index;
+    header.className = 'bookie_searchbox__li__header';
+    return header;
+  }
+
+  function makeHeader(text, index) {
     var header = document.createElement('div');
     header.innerHTML = text;
     header.className = 'bookie_searchbox__li__header';
