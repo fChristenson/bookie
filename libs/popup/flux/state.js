@@ -1,6 +1,8 @@
 var state = (function(reducers) {
   var subs = [];
   var data = {
+    list:  document.querySelector('.bookie_searchbox__ul'),
+    input: document.querySelector('.bookie_searchbox__input'),
     scripts: [],
     commandHistory: [],
     shiftKeyHeld: false,

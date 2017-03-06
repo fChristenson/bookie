@@ -1,5 +1,7 @@
 var Utils = (function() {
 
+  var ENTER_KEY_CODE = 13;
+
   function isMatch(text) {
     return function(d) {
       return nameFound(d.name, text) 
@@ -34,10 +36,75 @@ var Utils = (function() {
     };
   }
 
+  function renderList(list, data, value) {
+    if(!value) {
+      data.forEach(addItems(list));
+    } else {
+      data.filter(isMatch(value)).forEach(addItems(list));
+    }
+  }
+
+  function addItems(list) {
+    return function(d, i) {
+      return list.appendChild(makeLiElement(d, i + 2));
+    };
+  }
+
+  function makeLiElement(data, index, callback) {
+    var li = document.createElement('li');
+    li.tabIndex = index;
+    li.className = 'bookie_searchbox__li';
+    li.appendChild(makeIdLabel(data.id));
+    li.appendChild(makeHeader(data.name, index));
+    li.appendChild(makeContent(data.text));
+    li.addEventListener('keyup', selectByKey(li, callback));
+    li.addEventListener('click', selectByClick(li, callback));
+    
+    return li;
+  }
+
+  function selectByClick(el, callback) {
+    return function(e) {
+      callback(e, el);
+    };
+  }
+
+  function selectByKey(el, callback) {
+    return function(e) {
+      if(e.keyCode === ENTER_KEY_CODE) {
+        callback(e, el);
+      }
+    };
+  }
+
+  function makeIdLabel(index) {
+    var header = document.createElement('div');
+    header.innerHTML = '#' + index;
+    header.className = 'bookie_searchbox__li__header';
+    return header;
+  }
+
+  function makeHeader(text) {
+    var header = document.createElement('div');
+    header.innerHTML = text;
+    header.className = 'bookie_searchbox__li__header';
+    return header;
+  }
+
+  function makeContent(text) {
+    var content = document.createElement('div');
+    content.className = 'bookie_searchbox__li__content';
+    content.innerHTML = text;
+    return content;
+  }
+
   return {
+    renderList: renderList,
+    addItems: addItems,
     numberTagToNumber: numberTagToNumber,
     hasId: hasId,
     isNumberTag: isNumberTag,
-    isMatch: isMatch
+    isMatch: isMatch,
+    makeLiElement: makeLiElement
   };
 })();

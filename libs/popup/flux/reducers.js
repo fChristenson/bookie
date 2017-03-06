@@ -1,4 +1,4 @@
-var reducers = (function(actions) {
+var reducers = (function(actions, U) {
   function saveReducer(state, action) {
     switch(action.type) {
     
@@ -43,8 +43,29 @@ var reducers = (function(actions) {
     }
   }
 
+  function renderReducer(state, action) {
+    switch(action.type) {
+
+    case actions.SET_INPUT_VALUE:
+      state.input.value = action.payload;
+      return state;
+
+    case actions.CLEAR_LIST:
+      state.list.innerHTML = '';
+      return state;
+
+    case actions.SET_LIST_ITEMS:
+      U.renderList(state.list, state.scripts, action.payload);
+      return state;
+
+    default:
+      return state;
+    }
+  }
+
   return [
     saveReducer,
-    keyReducer
+    keyReducer,
+    renderReducer
   ];
-})(actions);
+})(actions, Utils);
