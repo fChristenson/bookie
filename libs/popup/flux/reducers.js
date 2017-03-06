@@ -20,6 +20,9 @@ var reducers = (function(actions) {
 
     case actions.SET_SHOW_COMMAND_FROM_HISTORY:
       return Object.assign({}, state, {showCommandFromHistory: action.payload});
+
+    case actions.SET_SCRIPTS:
+      return Object.assign({}, state, {scripts: action.payload});
     
     default:
       return state;

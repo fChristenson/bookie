@@ -1,6 +1,7 @@
 var state = (function(reducers) {
   var subs = [];
   var data = {
+    scripts: [],
     commandHistory: [],
     shiftKeyHeld: false,
     commandHistoryPointer: 0,

@@ -1,11 +1,11 @@
 var RenderUtils = (function(U, C, K) {
-  function renderList(list, data, e) {
-    if(!e.target.value) {
+  function renderList(list, data, value) {
+    if(!value) {
       list.innerHTML = '';
       data.forEach(addItems(list));
     } else {
       list.innerHTML = '';
-      data.filter(U.isMatch(e.target.value)).forEach(addItems(list));
+      data.filter(U.isMatch(value)).forEach(addItems(list));
     }
   }
 

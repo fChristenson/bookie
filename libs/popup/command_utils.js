@@ -1,5 +1,19 @@
-var CommandUtils = (function(window, U, data) {
+var CommandUtils = (function(window, U, state) {
   var port = chrome.extension.connect({name: 'Run scripts'});
+  var updatedState = {};
+
+  var app = {
+    updateState: updateState,
+    resetCommandQueue: resetCommandQueue,
+    runCommand: runCommand,
+    runLiCommand: runLiCommand
+  };
+
+  function updateState(state) {
+    updatedState = state;
+  }
+
+  state.subscribe(app);
 
   function runCommand(e) {
     var text = getCommand(e);
@@ -8,8 +22,8 @@ var CommandUtils = (function(window, U, data) {
 
   function getCommand(e) {
     if(U.isNumberTag(e)) {
-      var index = parseInt(e.target.value.slice(1, e.target.value.length));
-      var command = data.find(U.hasId(index));
+      var index = U.numberTagToNumber(e.target.value);
+      var command = updatedState.scripts.find(U.hasId(index));
       return command ? command.text : '';
     }
 
@@ -21,18 +35,10 @@ var CommandUtils = (function(window, U, data) {
     port.postMessage(text);
   }
 
-  function saveCommand(e) {
-    console.log('save');
-  }
-
   function resetCommandQueue() {
     port.postMessage('reset');
   }
 
-  return {
-    resetCommandQueue: resetCommandQueue,
-    runCommand: runCommand,
-    runLiCommand: runLiCommand,
-    saveCommand: saveCommand
-  };
-})(window, Utils, data);
+  return app;
+
+})(window, Utils, state);

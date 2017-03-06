@@ -2,14 +2,30 @@ var Utils = (function() {
 
   function isMatch(text) {
     return function(d) {
-      return d.name.indexOf(text) !== -1 
-      || d.text.indexOf(text) !== -1
-      || d.id.toString().indexOf(text.slice(1, text.length)) !== -1;
+      return nameFound(d.name, text) 
+      || textFound(d.text)
+      || idFound(d.id, text);
     };
+  }
+
+  function nameFound(name, text) {
+    return name && name.indexOf(text) !== -1;
+  }
+
+  function textFound(text, textToMatch) {
+    return text && text.indexOf(textToMatch) !== -1;
+  }
+
+  function idFound(id, text) {
+    return id && id.toString().indexOf(numberTagToNumber(text)) !== -1;
   }
 
   function isNumberTag(e) {
     return /^#\d+/.test(e.target.value);
+  }
+
+  function numberTagToNumber(value) {
+    return parseInt(value.slice(1, value.length));
   }
 
   function hasId(id) {
@@ -19,6 +35,7 @@ var Utils = (function() {
   }
 
   return {
+    numberTagToNumber: numberTagToNumber,
     hasId: hasId,
     isNumberTag: isNumberTag,
     isMatch: isMatch
