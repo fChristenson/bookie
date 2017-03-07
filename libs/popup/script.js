@@ -22,7 +22,7 @@ var script = (function(state, actions) {
   }
 
   function scriptToId(script) {
-    return script.id;
+    return script.id || 0;
   }
 
   function addScript(e) {
@@ -31,7 +31,8 @@ var script = (function(state, actions) {
       var text = getText(e);
       var scripts = vals.scripts || [];
       var idArray = scripts.map(scriptToId);
-      var id = Math.max.call(Math, idArray) + 1;
+      var maxId = Math.max.apply(Math, idArray);
+      var id = (maxId >= 0) ? maxId + 1 : 1;
       var updatedScripts = [{id: id, name: name, text: text}].concat(scripts);
 
       var obj = {

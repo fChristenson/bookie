@@ -17,6 +17,7 @@
   "author": "Fredrik Christenson",
   "permissions": [
     "storage",
+    "downloads",
     "tabs",
     "http://*/*",
     "https://*/*",

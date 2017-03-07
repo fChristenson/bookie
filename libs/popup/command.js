@@ -1,8 +1,8 @@
 var command = (function(U) {
   var port = chrome.extension.connect({name: 'Run scripts'});
 
-  function runCommand(e) {
-    var text = getCommand(e);
+  function runCommand(e, scripts) {
+    var text = getCommand(e, scripts);
     port.postMessage(text);
   }
 

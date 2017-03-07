@@ -35,8 +35,8 @@ var utils = (function() {
     return id && id.toString().indexOf(numberTagToNumber(text)) !== -1;
   }
 
-  function isNumberTag(e) {
-    return /^#\d+/.test(e.target.value);
+  function isNumberTag(val) {
+    return /^#\d+/.test(val);
   }
 
   function numberTagToNumber(value) {
