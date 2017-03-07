@@ -1,6 +1,11 @@
 var utils = (function() {
 
   var ENTER_KEY_CODE = 13;
+  var BACKSPACE_KEY_CODE = 8;
+
+  function isSave(value) {
+    return /^name/.test(value);
+  }
 
   function getPointerWithLowerBound(commandHistoryPointer) {
     return Math.max(commandHistoryPointer - 1, 0);
@@ -44,43 +49,57 @@ var utils = (function() {
     };
   }
 
-  function renderList(list, data, value, callback) {
+  function renderList(list, data, value, selectCallback, removeCallback) {
     if(!value) {
-      data.forEach(addItems(list, callback));
+      data.forEach(addItems(list, selectCallback, removeCallback));
     } else {
-      data.filter(isMatch(value)).forEach(addItems(list, callback));
+      data.filter(isMatch(value)).forEach(addItems(list, selectCallback, removeCallback));
     }
   }
 
-  function addItems(list, callback) {
+  function addItems(list, selectCallback, removeCallback) {
     return function(d, i) {
-      return list.appendChild(makeLiElement(d, i + 2, callback));
+      return list.appendChild(makeLiElement(d, i + 2, selectCallback, removeCallback));
     };
   }
 
-  function makeLiElement(data, index, callback) {
+  function makeLiElement(data, index, selectCallback, removeCallback) {
     var li = document.createElement('li');
     li.tabIndex = index;
     li.className = 'bookie_searchbox__li';
     li.appendChild(makeIdLabel(data.id));
     li.appendChild(makeHeader(data.name, index));
     li.appendChild(makeContent(data.text));
-    li.addEventListener('keyup', selectByKey(li, callback));
-    li.addEventListener('click', selectByClick(li, callback));
+    li.addEventListener('keyup', selectByKey(selectCallback, removeCallback));
+    li.addEventListener('click', selectByClick(li, selectCallback));
     
     return li;
   }
 
-  function selectByClick(el, callback) {
-    return function(e) {
-      callback(e, el);
+  function getExectutedCommands(e, vals) {
+    var array = (vals && vals.commandHistory) ? vals.commandHistory : [];
+    array.push(e.target.value);
+    return array;
+  }
+
+  function selectByClick(li, callback) {
+    return function() {
+      var text = li.lastChild.innerText;
+      return callback(text);
     };
   }
 
-  function selectByKey(el, callback) {
+  function selectByKey(selectCallback, removeCallback) {
     return function(e) {
+      var idTag = e.target.firstChild.innerText;
+      var text = e.target.lastChild.innerText;
+      
       if(e.keyCode === ENTER_KEY_CODE) {
-        callback(e, el);
+        return selectCallback(text);
+      }
+
+      if(e.keyCode === BACKSPACE_KEY_CODE) {
+        return removeCallback(idTag);
       }
     };
   }
@@ -110,6 +129,8 @@ var utils = (function() {
     getPointerWithLowerBound: getPointerWithLowerBound,
     getPointerWithUpperBound: getPointerWithUpperBound,
     renderList: renderList,
+    getExectutedCommands: getExectutedCommands,
+    isSave: isSave,
     addItems: addItems,
     numberTagToNumber: numberTagToNumber,
     hasId: hasId,

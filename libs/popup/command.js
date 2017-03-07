@@ -16,8 +16,7 @@ var command = (function(U) {
     return e.target.value;
   }
 
-  function runLiCommand(e, li) {
-    var text = li.lastChild.innerText;
+  function runLiCommand(text) {
     port.postMessage(text);
   }
 

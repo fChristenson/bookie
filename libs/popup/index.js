@@ -1,18 +1,19 @@
 (function(U, C, S, state, actions) {
   var UP_KEY_CODE = 38;
   var DOWN_KEY_CODE = 40;
-  var SHIFT_KEY_CODE = 16;
   var ENTER_KEY_CODE = 13;
+  var SCRIPTS = 'scripts';
+  var COMMAND_HISTORY = 'commandHistory';
+  var MAX_HISTORY_LENGTH = 100;
   var app = {updateState: updateState};
   var newState = state.data;
 
   state.subscribe(app);
-  S.getCommandHistory(initCommandHistory);
-  S.getScripts(initScriptList);
+  chrome.storage.sync.get(COMMAND_HISTORY, initCommandHistory);
+  chrome.storage.sync.get(SCRIPTS, initScriptList);
   C.resetCommandQueue();
 
   newState.input.addEventListener('keyup', update);
-  newState.input.addEventListener('keydown', isHoldingShift);
 
   function updateState(update) {
     newState = update;
@@ -21,12 +22,6 @@
       var val = newState.commandHistory[newState.commandHistoryPointer];
       state.dispatch(actions.makeAction(actions.SET_SHOW_COMMAND_FROM_HISTORY, false));
       state.dispatch(actions.makeAction(actions.SET_INPUT_VALUE, val));
-    }
-  }
-
-  function isHoldingShift(e) {
-    if(e.keyCode === SHIFT_KEY_CODE) {
-      state.dispatch(actions.makeAction(actions.SET_SHIFT_KEY_HELD));
     }
   }
 
@@ -45,9 +40,9 @@
   function update(e) {
     var val;
 
-    if(newState.shiftKeyHeld && e.keyCode === ENTER_KEY_CODE) {
+    if(e.keyCode === ENTER_KEY_CODE && U.isSave(e.target.value)) {
       state.dispatch(actions.makeAction(actions.SET_SHOW_COMMAND_FROM_HISTORY, false));
-      return S.saveScript(e, updateList);
+      return chrome.storage.sync.get(SCRIPTS, addScript(e));
     }
 
     if(e.keyCode === UP_KEY_CODE) {
@@ -62,14 +57,10 @@
       return state.dispatch(actions.makeAction(actions.SET_INPUT_VALUE, val));
     }
 
-    if(e.keyCode === SHIFT_KEY_CODE) {
-      state.dispatch(actions.makeAction(actions.SET_SHOW_COMMAND_FROM_HISTORY, false));
-      return state.dispatch(actions.makeAction(actions.UNSET_SHIFT_KEY_HELD));
-    }
-
     if(e.keyCode === ENTER_KEY_CODE) {
       state.dispatch(actions.makeAction(actions.SET_SHOW_COMMAND_FROM_HISTORY, false));
-      S.saveCommandToHistory(e);
+      chrome.storage.sync.get(COMMAND_HISTORY, addCommandToHistory(e));
+
       return C.runCommand(e);
     }
 
@@ -78,10 +69,49 @@
     return state.dispatch(actions.makeAction(actions.SET_LIST_ITEMS, e.target.value));
   }
 
-  function updateList() {
-    state.dispatch(actions.makeAction(actions.SET_INPUT_VALUE, ''));
-    state.dispatch(actions.makeAction(actions.CLEAR_LIST));
-    return state.dispatch(actions.makeAction(actions.SET_LIST_ITEMS));
+  function addScript(e) {
+    return function(vals) {
+      var name = getName(e);
+      var text = getText(e);
+      var scripts = vals.scripts || [];
+      var id = scripts.length;
+      var updatedScripts = [{id: id, name: name, text: text}].concat(scripts);
+
+      var obj = {
+        scripts: updatedScripts
+      };
+
+      state.dispatch(actions.makeAction(actions.SET_SCRIPTS, updatedScripts));
+      state.dispatch(actions.makeAction(actions.SET_INPUT_VALUE, ''));
+      state.dispatch(actions.makeAction(actions.CLEAR_LIST));
+      chrome.storage.sync.set(obj);
+
+      return state.dispatch(actions.makeAction(actions.SET_LIST_ITEMS));
+    };
+  }
+
+  function getText(e) {
+    var array = e.target.value.split('->');
+    return array[1].trim();
+  }
+
+  function getName(e) {
+    var array = e.target.value.split('->');
+    var nameCommand = array[0]; // name <name>
+    return nameCommand.slice(4, nameCommand.length).trim();
+  }
+
+  function addCommandToHistory(e) {
+    return function(vals) {
+      var array = U.getExectutedCommands(e, vals);
+
+      if(array.length >= MAX_HISTORY_LENGTH) {
+        array.shift();
+      }
+
+      state.dispatch(actions.makeAction(actions.SET_EXECUTED_COMMANDS, array));
+      return chrome.storage.sync.set({commandHistory: array});
+    };
   }
   
   return app;

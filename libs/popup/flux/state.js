@@ -5,7 +5,6 @@ var state = (function(reducers) {
     input: document.querySelector('.bookie_searchbox__input'),
     scripts: [],
     commandHistory: [],
-    shiftKeyHeld: false,
     commandHistoryPointer: 0,
     showCommandFromHistory: false
   };
