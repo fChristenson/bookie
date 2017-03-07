@@ -1,14 +1,29 @@
 var specialCommand = (function() {
   function isSpecialCommand(text) {
     return /^clear$/.test(text)
-    || /^export$/.test(text); 
+    || /^export$/.test(text)
+    || /^import$/.test(text);  
   }
 
   function runSpecialCommand(text, callback) {
     if(/^clear$/.test(text)) return chrome.storage.sync.set({scripts: [], commandHistory: []}, callback);
     if(/^export$/.test(text)) return chrome.storage.sync.get('scripts', exportList(callback));
+    if(/^import$/.test(text)) importList(text, callback);
     
     return callback();
+  }
+
+  function importList(text, callback) {
+    var scripts;
+    try {
+      scripts = JSON.parse(text);
+      if(!Array.isArray(scripts)) throw new Error('Not array');
+
+    } catch(e) {
+      scripts = [];
+    }
+
+    return chrome.storage.sync.set({scripts: scripts}, callback);
   }
 
   function exportList(callback) {
