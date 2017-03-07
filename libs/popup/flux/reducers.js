@@ -1,5 +1,8 @@
 var reducers = (function(actions, U) {
   function saveReducer(state, action) {
+    var pointer; 
+    var newState;
+    
     switch(action.type) {
     
     case actions.SET_EXECUTED_COMMANDS:
@@ -9,13 +12,13 @@ var reducers = (function(actions, U) {
       return Object.assign({}, state, {commandHistoryPointer: action.payload});
 
     case actions.MOVE_COMMAND_HISTORY_POINTER_FORWARD:
-      var pointer = Math.min(state.commandHistoryPointer + 1, state.commandHistory.length - 1);
-      var newState = {commandHistoryPointer: pointer, showCommandFromHistory: true};
+      pointer = U.getPointerWithUpperBound(state.commandHistoryPointer, state.commandHistory);
+      newState = {commandHistoryPointer: pointer, showCommandFromHistory: true};
       return Object.assign({}, state, newState);
 
     case actions.MOVE_COMMAND_HISTORY_POINTER_BACK:
-      var pointer = Math.max(state.commandHistoryPointer - 1, 0);
-      var newState = {commandHistoryPointer: pointer, showCommandFromHistory: true};
+      pointer = U.getPointerWithLowerBound(state.commandHistoryPointer);
+      newState = {commandHistoryPointer: pointer, showCommandFromHistory: true};
       return Object.assign({}, state, newState);
 
     case actions.SET_SHOW_COMMAND_FROM_HISTORY:

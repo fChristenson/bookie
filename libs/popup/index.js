@@ -47,7 +47,7 @@
 
     if(newState.shiftKeyHeld && e.keyCode === ENTER_KEY_CODE) {
       state.dispatch(actions.makeAction(actions.SET_SHOW_COMMAND_FROM_HISTORY, false));
-      return S.saveScript(e, updateList(e.target.value));
+      return S.saveScript(e, updateList);
     }
 
     if(e.keyCode === UP_KEY_CODE) {
@@ -78,14 +78,12 @@
     return state.dispatch(actions.makeAction(actions.SET_LIST_ITEMS, e.target.value));
   }
 
-  function updateList(value) {
-    return function() {
-      state.dispatch(actions.makeAction(actions.SET_INPUT_VALUE, ''));
-      state.dispatch(actions.makeAction(actions.CLEAR_LIST));
-      state.dispatch(actions.makeAction(actions.SET_LIST_ITEMS, value));
-    };
+  function updateList() {
+    state.dispatch(actions.makeAction(actions.SET_INPUT_VALUE, ''));
+    state.dispatch(actions.makeAction(actions.CLEAR_LIST));
+    return state.dispatch(actions.makeAction(actions.SET_LIST_ITEMS));
   }
   
   return app;
 
-})(Utils, CommandUtils, saveUtils, state, actions);
+})(Utils, commandUtils, saveUtils, state, actions);

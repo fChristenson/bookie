@@ -2,6 +2,14 @@ var Utils = (function() {
 
   var ENTER_KEY_CODE = 13;
 
+  function getPointerWithLowerBound(commandHistoryPointer) {
+    return Math.max(commandHistoryPointer - 1, 0);
+  }
+
+  function getPointerWithUpperBound(commandHistoryPointer, commandHistory) {
+    return Math.min(commandHistoryPointer + 1, commandHistory.length - 1);
+  }
+
   function isMatch(text) {
     return function(d) {
       return nameFound(d.name, text) 
@@ -99,6 +107,8 @@ var Utils = (function() {
   }
 
   return {
+    getPointerWithLowerBound: getPointerWithLowerBound,
+    getPointerWithUpperBound: getPointerWithUpperBound,
     renderList: renderList,
     addItems: addItems,
     numberTagToNumber: numberTagToNumber,

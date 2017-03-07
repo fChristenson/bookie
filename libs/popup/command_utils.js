@@ -1,4 +1,4 @@
-var CommandUtils = (function(U) {
+var commandUtils = (function(U) {
   var port = chrome.extension.connect({name: 'Run scripts'});
 
   function runCommand(e) {
