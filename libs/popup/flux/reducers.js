@@ -1,4 +1,4 @@
-var reducers = (function(actions, U, C) {
+var reducers = (function(actions, U) {
   function saveReducer(state, action) {
     var pointer; 
     var newState;
@@ -39,12 +39,8 @@ var reducers = (function(actions, U, C) {
       state.input.value = action.payload;
       return state;
 
-    case actions.CLEAR_LIST:
-      state.list.innerHTML = '';
-      return state;
-
-    case actions.SET_LIST_ITEMS:
-      U.renderList(state.list, state.scripts, action.payload, C.runLiCommand);
+    case actions.RESET_FOCUS:
+      state.input.focus();
       return state;
 
     default:
@@ -56,4 +52,4 @@ var reducers = (function(actions, U, C) {
     saveReducer,
     renderReducer
   ];
-})(actions, utils, command);
+})(actions, utils);

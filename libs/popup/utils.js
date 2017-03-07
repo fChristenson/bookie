@@ -50,6 +50,8 @@ var utils = (function() {
   }
 
   function renderList(list, data, value, selectCallback, removeCallback) {
+    list.innerHTML = '';
+
     if(!value) {
       data.forEach(addItems(list, selectCallback, removeCallback));
     } else {
@@ -91,7 +93,7 @@ var utils = (function() {
 
   function selectByKey(selectCallback, removeCallback) {
     return function(e) {
-      var idTag = e.target.firstChild.innerText;
+      var id = numberTagToNumber(e.target.firstChild.innerText);
       var text = e.target.lastChild.innerText;
       
       if(e.keyCode === ENTER_KEY_CODE) {
@@ -99,7 +101,7 @@ var utils = (function() {
       }
 
       if(e.keyCode === BACKSPACE_KEY_CODE) {
-        return removeCallback(idTag);
+        return removeCallback(id);
       }
     };
   }

@@ -7,7 +7,7 @@ var command = (function(U) {
   }
 
   function getCommand(e, scripts) {
-    if(U.isNumberTag(e)) {
+    if(U.isNumberTag(e.target.value)) {
       var index = U.numberTagToNumber(e.target.value);
       var command = scripts.find(U.hasId(index));
       return command ? command.text : '';
