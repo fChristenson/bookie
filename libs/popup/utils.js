@@ -1,4 +1,4 @@
-var Utils = (function() {
+var utils = (function() {
 
   var ENTER_KEY_CODE = 13;
 
@@ -13,7 +13,7 @@ var Utils = (function() {
   function isMatch(text) {
     return function(d) {
       return nameFound(d.name, text) 
-      || textFound(d.text)
+      || textFound(d.text, text)
       || idFound(d.id, text);
     };
   }
@@ -44,17 +44,17 @@ var Utils = (function() {
     };
   }
 
-  function renderList(list, data, value) {
+  function renderList(list, data, value, callback) {
     if(!value) {
-      data.forEach(addItems(list));
+      data.forEach(addItems(list, callback));
     } else {
-      data.filter(isMatch(value)).forEach(addItems(list));
+      data.filter(isMatch(value)).forEach(addItems(list, callback));
     }
   }
 
-  function addItems(list) {
+  function addItems(list, callback) {
     return function(d, i) {
-      return list.appendChild(makeLiElement(d, i + 2));
+      return list.appendChild(makeLiElement(d, i + 2, callback));
     };
   }
 

@@ -1,4 +1,4 @@
-var saveUtils = (function(state, actions) {
+var save = (function(state, actions) {
   var COMMAND_HISTORY = 'commandHistory';
   var SCRIPTS = 'scripts';
   var MAX_HISTORY_LENGTH = 100;

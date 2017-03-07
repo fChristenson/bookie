@@ -1,4 +1,4 @@
-var reducers = (function(actions, U) {
+var reducers = (function(actions, U, C) {
   function saveReducer(state, action) {
     var pointer; 
     var newState;
@@ -58,7 +58,7 @@ var reducers = (function(actions, U) {
       return state;
 
     case actions.SET_LIST_ITEMS:
-      U.renderList(state.list, state.scripts, action.payload);
+      U.renderList(state.list, state.scripts, action.payload, C.runLiCommand);
       return state;
 
     default:
@@ -71,4 +71,4 @@ var reducers = (function(actions, U) {
     keyReducer,
     renderReducer
   ];
-})(actions, Utils);
+})(actions, utils, command);

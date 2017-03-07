@@ -1,4 +1,4 @@
-var commandUtils = (function(U) {
+var command = (function(U) {
   var port = chrome.extension.connect({name: 'Run scripts'});
 
   function runCommand(e) {
@@ -31,4 +31,4 @@ var commandUtils = (function(U) {
     runLiCommand: runLiCommand
   };
 
-})(Utils);
+})(utils);

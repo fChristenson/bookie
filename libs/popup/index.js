@@ -86,4 +86,4 @@
   
   return app;
 
-})(Utils, commandUtils, saveUtils, state, actions);
+})(utils, command, save, state, actions);
