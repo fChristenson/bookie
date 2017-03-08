@@ -28,7 +28,7 @@
     "scripts": ["libs/background/background.js"]
   },
   "web_accessible_resources": [
-    "libs/bookie.js"
+    "libs/public_api.js"
   ],
   "content_scripts": [
     {

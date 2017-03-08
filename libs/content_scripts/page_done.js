@@ -3,7 +3,7 @@ port.postMessage('done');
 port.postMessage('getStore');
 
 var script = document.createElement('script');
-script.src = chrome.extension.getURL('libs/bookie.js');
+script.src = chrome.extension.getURL('libs/public_api.js');
 document.body.appendChild(script);
 
 // we assume that there will only be one message as a response
