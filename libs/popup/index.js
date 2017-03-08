@@ -29,7 +29,7 @@
         deleteScript);
 
     if(newState.showCommandFromHistory) {
-      var val = newState.commandHistory[newState.commandHistoryPointer];
+      var val = val = getHistoryCommand(newState);
       state.dispatch(actions.makeAction(actions.SET_SHOW_COMMAND_FROM_HISTORY, false));
       state.dispatch(actions.makeAction(actions.SET_INPUT_VALUE, val));
     }
@@ -64,13 +64,13 @@
 
     if(e.keyCode === UP_KEY_CODE) {
       state.dispatch(actions.makeAction(actions.MOVE_COMMAND_HISTORY_POINTER_BACK));
-      val = newState.commandHistory[newState.commandHistoryPointer];
+      val = getHistoryCommand(newState);
       return state.dispatch(actions.makeAction(actions.SET_INPUT_VALUE, val));
     }
 
     if(e.keyCode === DOWN_KEY_CODE) {
       state.dispatch(actions.makeAction(actions.MOVE_COMMAND_HISTORY_POINTER_FORWARD));
-      val = newState.commandHistory[newState.commandHistoryPointer];
+      val = getHistoryCommand(newState);
       return state.dispatch(actions.makeAction(actions.SET_INPUT_VALUE, val));
     }
 
@@ -81,6 +81,10 @@
     }
 
     return state.dispatch(actions.makeAction(actions.SET_SHOW_COMMAND_FROM_HISTORY, false));
+  }
+
+  function getHistoryCommand(newState) {
+    return newState.commandHistory[newState.commandHistoryPointer] || '';
   }
   
   return app;

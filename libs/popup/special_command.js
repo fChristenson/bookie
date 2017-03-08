@@ -1,14 +1,14 @@
-var specialCommand = (function() {
+var specialCommand = (function(state, actions) {
   function isSpecialCommand(text) {
     return /^clear$/.test(text)
     || /^export$/.test(text)
-    || /^import$/.test(text);  
+    || /^import ->/.test(text);  
   }
 
   function runSpecialCommand(text, callback) {
     if(/^clear$/.test(text)) return chrome.storage.sync.set({scripts: [], commandHistory: []}, callback);
     if(/^export$/.test(text)) return chrome.storage.sync.get('scripts', exportList(callback));
-    if(/^import$/.test(text)) importList(text, callback);
+    if(/^import ->/.test(text)) return importList(text, callback);
     
     return callback();
   }
@@ -16,14 +16,16 @@ var specialCommand = (function() {
   function importList(text, callback) {
     var scripts;
     try {
-      scripts = JSON.parse(text);
-      if(!Array.isArray(scripts)) throw new Error('Not array');
+      var strScripts = text.split('->')[1];
+      scripts = JSON.parse(strScripts);
 
+      if(!Array.isArray(scripts)) throw new Error('Not valid array');
+
+      chrome.storage.sync.set({scripts: scripts}, callback);
+    
     } catch(e) {
-      scripts = [];
+      state.dispatch(actions.makeAction(actions.SET_INPUT_VALUE, 'import is not a valid array'));
     }
-
-    return chrome.storage.sync.set({scripts: scripts}, callback);
   }
 
   function exportList(callback) {
@@ -34,7 +36,7 @@ var specialCommand = (function() {
 
       chrome.downloads.download({
         url: url,
-        filename: 'scripts.json'
+        filename: 'bookie_scripts.json'
       });
     };
   }
@@ -43,4 +45,4 @@ var specialCommand = (function() {
     isSpecialCommand: isSpecialCommand,
     runSpecialCommand: runSpecialCommand
   };
-})();
+})(state, actions);

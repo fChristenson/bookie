@@ -32,7 +32,7 @@ var utils = (function() {
   }
 
   function idFound(id, text) {
-    return id && id.toString().indexOf(numberTagToNumber(text)) !== -1;
+    return id === numberTagToNumber(text);
   }
 
   function isNumberTag(val) {
