@@ -27,6 +27,9 @@
   "background": {
     "scripts": ["libs/background/background.js"]
   },
+  "web_accessible_resources": [
+    "libs/bookie.js"
+  ],
   "content_scripts": [
     {
       "run_at": "document_end",
