@@ -17,9 +17,7 @@ var utils = (function() {
 
   function isMatch(text) {
     return function(d) {
-      return nameFound(d.name, text) 
-      || textFound(d.text, text)
-      || idFound(d.id, text);
+      return idFound(d.id, text) || nameFound(d.name, text) || textFound(d.text, text);
     };
   }
 
@@ -35,8 +33,8 @@ var utils = (function() {
     return id === numberTagToNumber(text);
   }
 
-  function isNumberTag(val) {
-    return /^#\d+/.test(val);
+  function hasNumberTag(val) {
+    return /(#\d)+/.test(val);
   }
 
   function numberTagToNumber(value) {
@@ -49,31 +47,31 @@ var utils = (function() {
     };
   }
 
-  function renderList(list, data, value, selectCallback, removeCallback) {
+  function renderList(list, scripts, value, selectCallback, removeCallback) {
     list.innerHTML = '';
 
     if(!value) {
-      data.forEach(addItems(list, selectCallback, removeCallback));
+      scripts.forEach(addItems(list, scripts, selectCallback, removeCallback));
     } else {
-      data.filter(isMatch(value)).forEach(addItems(list, selectCallback, removeCallback));
+      scripts.filter(isMatch(value)).forEach(addItems(list, scripts, selectCallback, removeCallback));
     }
   }
 
-  function addItems(list, selectCallback, removeCallback) {
+  function addItems(list, scripts, selectCallback, removeCallback) {
     return function(d, i) {
-      return list.appendChild(makeLiElement(d, i + 2, selectCallback, removeCallback));
+      return list.appendChild(makeLiElement(d, i + 2, scripts, selectCallback, removeCallback));
     };
   }
 
-  function makeLiElement(data, index, selectCallback, removeCallback) {
+  function makeLiElement(data, index, scripts, selectCallback, removeCallback) {
     var li = document.createElement('li');
     li.tabIndex = index;
     li.className = 'bookie_searchbox__li';
     li.appendChild(makeIdLabel(data.id));
     li.appendChild(makeHeader(data.name, index));
     li.appendChild(makeContent(data.text));
-    li.addEventListener('keyup', selectByKey(selectCallback, removeCallback));
-    li.addEventListener('click', selectByClick(li, selectCallback));
+    li.addEventListener('keyup', selectByKey(scripts, selectCallback, removeCallback));
+    li.addEventListener('click', selectByClick(li, scripts, selectCallback));
     
     return li;
   }
@@ -84,20 +82,20 @@ var utils = (function() {
     return array;
   }
 
-  function selectByClick(li, callback) {
+  function selectByClick(li, scripts, callback) {
     return function() {
       var text = li.lastChild.innerText;
-      return callback(text);
+      return callback(text, scripts);
     };
   }
 
-  function selectByKey(selectCallback, removeCallback) {
+  function selectByKey(scripts, selectCallback, removeCallback) {
     return function(e) {
       var id = numberTagToNumber(e.target.firstChild.innerText);
       var text = e.target.lastChild.innerText;
       
       if(e.keyCode === ENTER_KEY_CODE) {
-        return selectCallback(text);
+        return selectCallback(text, scripts);
       }
 
       if(e.keyCode === BACKSPACE_KEY_CODE) {
@@ -127,7 +125,12 @@ var utils = (function() {
     return content;
   }
 
+  function numberTagToScript(str, script) {
+    return str.replace(new RegExp('#' + script.id, 'g'), script.text);
+  }
+
   return {
+    numberTagToScript: numberTagToScript,
     getPointerWithLowerBound: getPointerWithLowerBound,
     getPointerWithUpperBound: getPointerWithUpperBound,
     renderList: renderList,
@@ -136,7 +139,7 @@ var utils = (function() {
     addItems: addItems,
     numberTagToNumber: numberTagToNumber,
     hasId: hasId,
-    isNumberTag: isNumberTag,
+    hasNumberTag: hasNumberTag,
     isMatch: isMatch,
     makeLiElement: makeLiElement
   };

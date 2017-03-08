@@ -25,7 +25,7 @@
         newState.list, 
         newState.scripts, 
         newState.input.value, 
-        C.runLiCommand,
+        C.runCommand,
         deleteScript);
 
     if(newState.showCommandFromHistory) {
@@ -75,7 +75,7 @@
     }
 
     if(e.keyCode === ENTER_KEY_CODE) {
-      C.runCommand(e, newState.scripts);
+      C.runCommand(e.target.value, newState.scripts);
       state.dispatch(actions.makeAction(actions.SET_SHOW_COMMAND_FROM_HISTORY, false));
       return chrome.storage.sync.get(COMMAND_HISTORY, H.addCommandToHistory(e));
     }

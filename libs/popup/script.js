@@ -47,7 +47,9 @@ var script = (function(state, actions) {
 
   function getText(e) {
     var array = e.target.value.split('->');
-    return array[1].trim();
+    var str = array.slice(1, array.length).join('->');
+
+    return str.trim();
   }
 
   function getName(e) {

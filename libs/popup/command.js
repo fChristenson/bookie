@@ -1,23 +1,17 @@
 var command = (function(U) {
   var port = chrome.extension.connect({name: 'Run scripts'});
 
-  function runCommand(e, scripts) {
-    var text = getCommand(e, scripts);
+  function runCommand(commandString, scripts) {
+    var text = getCommand(commandString, scripts);
     port.postMessage(text);
   }
 
-  function getCommand(e, scripts) {
-    if(U.isNumberTag(e.target.value)) {
-      var index = U.numberTagToNumber(e.target.value);
-      var command = scripts.find(U.hasId(index));
-      return command ? command.text : '';
+  function getCommand(commandString, scripts) {
+    if(U.hasNumberTag(commandString)) {
+      return scripts.reduce(U.numberTagToScript, commandString);
     }
 
-    return e.target.value;
-  }
-
-  function runLiCommand(text) {
-    port.postMessage(text);
+    return commandString;
   }
 
   function resetCommandQueue() {
@@ -26,8 +20,7 @@ var command = (function(U) {
 
   return {
     resetCommandQueue: resetCommandQueue,
-    runCommand: runCommand,
-    runLiCommand: runLiCommand
+    runCommand: runCommand
   };
 
 })(utils);
