@@ -33,7 +33,6 @@
   ],
   "content_scripts": [
     {
-      "run_at": "document_end",
       "matches": [
         "http://*/*",
         "https://*/*",

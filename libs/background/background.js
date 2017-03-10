@@ -11,7 +11,7 @@ chrome.extension.onConnect.addListener(function(port) {
 
     if(msg === 'done') {
       tabId = conn.sender.tab.url;
-      if(commands.length > 0) chrome.tabs.query({id: conn.sender.tab.id}, runInTab);
+      if(commands.length > 0) chrome.tabs.query({url: tabId}, runInTab);
       return;
     }
 
