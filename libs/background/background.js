@@ -1,21 +1,16 @@
 var commands = [];
 var store = {};
+var tabs = {};
 
 chrome.extension.onConnect.addListener(function(port) {
-  port.onMessage.addListener(function(msg) {  
+  port.onMessage.addListener(function(msg, conn) {
     if(msg === 'reset') {
       commands = [];
       return;
     }
 
     if(msg === 'done') {
-      var command = commands.shift();
-      
-      if(command) {
-        chrome.tabs.executeScript({
-          code: command
-        });
-      }
+      if(commands.length > 0) chrome.tabs.query({id: conn.sender.tab.id}, runInTab);
       return;
     }
 
@@ -32,8 +27,14 @@ chrome.extension.onConnect.addListener(function(port) {
     // split on arrow to know what scripts will run on the next page
     commands = msg.split('->');
     
-    chrome.tabs.executeScript({
-      code: commands.shift()
-    });
+    chrome.tabs.query({id: conn.sender.tab.id}, runInTab);
+
+    function runInTab(tabs) {
+      if(tabs && tabs[0]) {
+        chrome.tabs.executeScript(tabs[0].id, {
+          code: commands.shift()
+        });
+      }
+    }
   });
 });
