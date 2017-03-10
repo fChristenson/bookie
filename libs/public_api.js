@@ -9,6 +9,9 @@ Bookie = {
     this.store[key] = val;
     var obj = {detail: {type: 'setValueOnStore', store: this.store}};
     document.dispatchEvent(new CustomEvent('bookie', obj));
+  },
+  done: function() {
+    document.dispatchEvent(new CustomEvent('bookie', {detail: 'done'}));
   }
 };
 
