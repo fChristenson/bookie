@@ -10,7 +10,7 @@ chrome.extension.onConnect.addListener(function(port) {
     }
 
     if(msg === 'done') {
-      tabId = conn.sender.tab.id;
+      tabId = conn.sender.tab.url;
       if(commands.length > 0) chrome.tabs.query({id: conn.sender.tab.id}, runInTab);
       return;
     }
@@ -28,7 +28,7 @@ chrome.extension.onConnect.addListener(function(port) {
     // split on arrow to know what scripts will run on the next page
     commands = msg.split('->');
     
-    chrome.tabs.query({id: tabId}, runInTab);
+    chrome.tabs.query({url: tabId}, runInTab);
 
     function runInTab(tabs) {
       if(tabs && tabs[0]) {
