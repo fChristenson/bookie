@@ -1,13 +1,13 @@
-var port = chrome.extension.connect({name: 'Run scripts'});
-port.postMessage('getStore');
-port.postMessage('done');
-
 var script = document.createElement('script');
 script.src = chrome.extension.getURL('libs/public_api.js');
 document.body.appendChild(script);
 
-// we assume that there will only be one message as a response
-// for the getStore message
+document.addEventListener('bookie', function(e) {
+  port.postMessage(e.detail);
+});
+
+var port = chrome.extension.connect({name: 'Run scripts'});
+
 port.onMessage.addListener(function(msg) {
   var obj;
 
@@ -22,6 +22,5 @@ port.onMessage.addListener(function(msg) {
   }
 });
 
-document.addEventListener('bookie', function(e) {
-  port.postMessage(e.detail);
-});
+port.postMessage('getStore');
+port.postMessage('done');
