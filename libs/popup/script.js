@@ -1,4 +1,4 @@
-var script = (function(state, actions) {
+var script = (function(state, actions, U) {
 
   function removeScript(id) {
     return function(vals) {
@@ -32,7 +32,6 @@ var script = (function(state, actions) {
       var scripts = vals.scripts || [];
       var id = getId(e, scripts);
 
-      //TODO: make sure id is uniq
       var updatedScripts = [{id: id, name: name, text: text}].concat(scripts);
 
       var obj = {
@@ -51,7 +50,9 @@ var script = (function(state, actions) {
     var match = idCommand.match(/\s*id\s([\w\d]+)\s/)[1];
     
     if(match) {
-      return parseInt(match.trim());
+      var desiredId = parseInt(match.trim());
+
+      if(!scripts.some(U.hasId(desiredId))) return desiredId;
     }
     
     var idArray = scripts.map(scriptToId);
@@ -80,4 +81,4 @@ var script = (function(state, actions) {
     removeScript: removeScript
   };
 
-})(state, actions);
+})(state, actions, utils);
