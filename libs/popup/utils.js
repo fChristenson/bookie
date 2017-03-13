@@ -4,7 +4,7 @@ var utils = (function() {
   var BACKSPACE_KEY_CODE = 8;
 
   function isSave(value) {
-    return /^name/.test(value);
+    return /^name|id/.test(value);
   }
 
   function getPointerWithLowerBound(commandHistoryPointer) {

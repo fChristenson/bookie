@@ -30,9 +30,9 @@ var script = (function(state, actions) {
       var name = getName(e);
       var text = getText(e);
       var scripts = vals.scripts || [];
-      var idArray = scripts.map(scriptToId);
-      var maxId = Math.max.apply(Math, idArray);
-      var id = (maxId >= 0) ? maxId + 1 : 1;
+      var id = getId(e, scripts);
+
+      //TODO: make sure id is uniq
       var updatedScripts = [{id: id, name: name, text: text}].concat(scripts);
 
       var obj = {
@@ -45,6 +45,21 @@ var script = (function(state, actions) {
     };
   }
 
+  function getId(e, scripts) {
+    var array = e.target.value.split('->');
+    var idCommand = array[0];
+    var match = idCommand.match(/\s*id\s([\w\d]+)\s/)[1];
+    
+    if(match) {
+      return parseInt(match.trim());
+    }
+    
+    var idArray = scripts.map(scriptToId);
+    var maxId = Math.max.apply(Math, idArray);
+    
+    return (maxId >= 0) ? maxId + 1 : 1;
+  }
+
   function getText(e) {
     var array = e.target.value.split('->');
     var str = array.slice(1, array.length).join('->');
@@ -54,8 +69,10 @@ var script = (function(state, actions) {
 
   function getName(e) {
     var array = e.target.value.split('->');
-    var nameCommand = array[0]; // name <name>
-    return nameCommand.slice(4, nameCommand.length).trim();
+    var nameCommand = array[0];
+    var match = nameCommand.match(/name\s([\w\d]+)\s/)[1];
+
+    return match.trim();
   }
 
   return {
