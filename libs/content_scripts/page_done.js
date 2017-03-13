@@ -9,8 +9,17 @@ document.body.appendChild(script);
 // we assume that there will only be one message as a response
 // for the getStore message
 port.onMessage.addListener(function(msg) {
-  var obj = {detail: {type: 'init', store: msg}};
-  document.dispatchEvent(new CustomEvent('bookie_page', obj));
+  var obj;
+
+  if(msg.type === 'script') {
+    obj = {detail: {type: 'run', script: msg.script}};
+    document.dispatchEvent(new CustomEvent('bookie_page', obj));
+  }
+
+  if(msg.type === 'store') {
+    obj = {detail: {type: 'init', store: msg.store}};
+    document.dispatchEvent(new CustomEvent('bookie_page', obj));
+  }
 });
 
 document.addEventListener('bookie', function(e) {

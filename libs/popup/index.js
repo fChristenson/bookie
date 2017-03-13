@@ -14,7 +14,6 @@
   function init() {
     chrome.storage.sync.get(COMMAND_HISTORY, initCommandHistory);
     chrome.storage.sync.get(SCRIPTS, initScriptList);
-    C.resetCommandQueue();
     state.dispatch(actions.makeAction(actions.SET_INPUT_VALUE, ''));
   }
 

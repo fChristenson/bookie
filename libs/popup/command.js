@@ -14,12 +14,7 @@ var command = (function(U) {
     return commandString;
   }
 
-  function resetCommandQueue() {
-    port.postMessage('reset');
-  }
-
   return {
-    resetCommandQueue: resetCommandQueue,
     runCommand: runCommand
   };
 

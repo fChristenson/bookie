@@ -18,7 +18,8 @@ Bookie = {
 document.addEventListener('bookie_page', function(e) {
   if(e.detail.type === 'init') {
     Bookie.store = e.detail.store;
-  } else {
-    Bookie.store[e.detail.key] = e.detail.val;
+
+  } else if(e.detail.type === 'script') {
+    eval(e.detail.store);
   }
 });
