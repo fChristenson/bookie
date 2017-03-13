@@ -16,10 +16,10 @@ Bookie = {
 };
 
 document.addEventListener('bookie_page', function(e) {
-  if(e.detail.type === 'init') {
+  if(e.detail.type === 'store') {
     Bookie.store = e.detail.store;
 
   } else if(e.detail.type === 'script') {
-    eval(e.detail.store);
+    eval(e.detail.script);
   }
 });
