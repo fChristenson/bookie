@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "prebuild": "mkdir -p dist",
+    "img": "cp icon.png dist/icon.png",
     "manifest": "cp manifest.json dist/manifest.json",
     "css": "cp main.css dist/main.css",
     "libs": "cp -R libs dist/libs",
     "html": "cp popup.html dist/popup.html",
-    "zip": "npm run build && zip -r bookie.zip dist/",
-    "build": "npm run manifest & npm run css & npm run libs & npm run html"
+    "zip": "npm run build && zip -r bookie.zip dist/*",
+    "build": "npm run manifest & npm run css & npm run libs & npm run html & npm run img"
   },
   "repository": {
     "type": "git",
