@@ -73,7 +73,7 @@ Export your saved scripts as a json file.
 ### `import -> <import>` 
 Import a exported bookie config.
 
-### `[id <id>] [name <name>] -> <script>` 
+### `[id <id>] name <name> -> <script>` 
 Save a script.
 
 ![save demo](name_script.gif "Save demo")

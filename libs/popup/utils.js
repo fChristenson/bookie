@@ -148,12 +148,17 @@ var utils = (function() {
     return str.trim();
   }
 
+  function trim(str) {
+    return str.trim();
+  }
+
   function getName(e) {
     var array = e.target.value.split('->');
     var nameCommand = array[0];
-    var match = nameCommand.match(/name\s([\w\d]+)\s/);
+    var matches = nameCommand.match(/name\s([\w\d\s]+)/);
+    if(!matches) return '';
 
-    return match ? match[1].trim() : '';
+    return matches.map(trim).slice(1, matches.length).join(' ');
   }
 
   function scriptToId(script) {
