@@ -7,8 +7,8 @@ var command = (function(U) {
   }
 
   function getCommand(commandString, scripts) {
-    if(U.hasNumberTag(commandString)) {
-      return scripts.reduce(U.numberTagToScript, commandString);
+    if(U.hasVariableName(commandString)) {
+      return scripts.reduce(U.variableNameToScript, commandString);
     }
 
     return commandString;
