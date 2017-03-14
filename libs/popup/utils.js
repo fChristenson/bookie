@@ -22,7 +22,7 @@ var utils = (function() {
   }
 
   function textFound(text, textToMatch) {
-    return new RegExp(text, 'gi').test(textToMatch);
+    return new RegExp(textToMatch, 'gi').test(text);
   }
 
   function hasVariableName(val) {
@@ -45,13 +45,18 @@ var utils = (function() {
     };
   }
 
+  function removeHash(value) {
+    return /^#/.test(value) ? value.slice(1, value.length) : value;
+  }
+
   function renderList(list, scripts, value, selectCallback, removeCallback) {
     list.innerHTML = '';
+    var text = removeHash(value);
 
-    if(!value) {
+    if(!text) {
       scripts.forEach(addItems(list, scripts, selectCallback, removeCallback));
     } else {
-      scripts.filter(isMatch(value)).forEach(addItems(list, scripts, selectCallback, removeCallback));
+      scripts.filter(isMatch(text)).forEach(addItems(list, scripts, selectCallback, removeCallback));
     }
   }
 

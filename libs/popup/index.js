@@ -52,13 +52,13 @@
   function update(e) {
     var val;
 
+    if(e.keyCode === ENTER_KEY_CODE && SC.isSpecialCommand(e.target.value)) {
+      return SC.runSpecialCommand(e.target.value, init);
+    }
+
     if(e.keyCode === ENTER_KEY_CODE && U.isSave(e.target.value)) {
       state.dispatch(actions.makeAction(actions.SET_SHOW_COMMAND_FROM_HISTORY, false));
       return chrome.storage.sync.get(SCRIPTS, S.addScript(e));
-    }
-
-    if(e.keyCode === ENTER_KEY_CODE && SC.isSpecialCommand(e.target.value)) {
-      return SC.runSpecialCommand(e.target.value, init);
     }
 
     if(e.keyCode === UP_KEY_CODE) {
