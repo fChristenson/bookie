@@ -12,7 +12,7 @@
     "html": "cp popup.html dist/popup.html",
     "clean": "rm -r bookie.zip",
     "zip": "zip -r bookie.zip dist/*",
-    "build": "npm run manifest & npm run css & npm run libs & npm run html & npm run img"
+    "build": "npm run manifest && npm run css && npm run libs && npm run html && npm run img"
   },
   "repository": {
     "type": "git",
