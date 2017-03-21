@@ -4,7 +4,7 @@
   "description": "Bookie is a Javascript queue extension that will allow you to run scripts in sequence and across multiple pages.",
   "main": "index.js",
   "scripts": {
-    "prebuild": "mkdir -p dist",
+    "prebuild": "rm -rf dist && mkdir -p dist",
     "img": "cp icon.png dist/icon.png",
     "manifest": "cp manifest.json dist/manifest.json",
     "css": "cp main.css dist/main.css",
