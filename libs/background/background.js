@@ -14,6 +14,8 @@ function runCommandFromQueue(msg, port, id) {
     return;
   }
 
+  if(msg === 'getQueue') return port.postMessage({type: 'queue', queue: tabs[id]});
+
   // this will get the store and send it to page_done.js
   // so it can be put on the Bookie object
   if(msg === 'getStore') return port.postMessage({type: 'store', store: tabs[id].store});

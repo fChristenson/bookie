@@ -12,12 +12,18 @@ Bookie = {
   },
   done: function() {
     document.dispatchEvent(new CustomEvent('bookie', {detail: 'done'}));
+  },
+  getQueue: function() {
+    document.dispatchEvent(new CustomEvent('bookie', {detail: 'getQueue'}));
   }
 };
 
 document.addEventListener('bookie_page', function(e) {
   if(e.detail.type === 'store') {
     Bookie.store = e.detail.store;
+
+  } else if(e.detail.type === 'queue') {
+    console.log(e.detail.queue);
 
   } else if(e.detail.type === 'script') {
     eval(e.detail.script);

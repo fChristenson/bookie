@@ -20,6 +20,11 @@ port.onMessage.addListener(function(msg) {
     obj = {detail: {type: msg.type, store: msg.store}};
     document.dispatchEvent(new CustomEvent('bookie_page', obj));
   }
+
+  if(msg.type === 'queue') {
+    obj = {detail: {type: msg.type, queue: msg.queue}};
+    document.dispatchEvent(new CustomEvent('bookie_page', obj));
+  }
 });
 
 port.postMessage('getStore');

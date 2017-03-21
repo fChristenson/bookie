@@ -10,7 +10,8 @@
     "css": "cp main.css dist/main.css",
     "libs": "cp -R libs dist/libs",
     "html": "cp popup.html dist/popup.html",
-    "zip": "npm run build && zip -r bookie.zip dist/*",
+    "clean": "rm -r bookie.zip",
+    "zip": "zip -r bookie.zip dist/*",
     "build": "npm run manifest & npm run css & npm run libs & npm run html & npm run img"
   },
   "repository": {
