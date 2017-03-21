@@ -16,7 +16,8 @@ var specialCommand = (function(state, actions) {
   function importList(text, callback) {
     var scripts;
     try {
-      var strScripts = text.split('->')[1];
+      var array = text.split('->');
+      var strScripts = array.slice(1, array.length).join('->');
       scripts = JSON.parse(strScripts);
 
       if(!Array.isArray(scripts)) throw new Error('Not valid array');
